@@ -25,7 +25,7 @@ async function fetchData() {
 function makeHtmlList(param) {
   for (const product of param) {
     productList +=
-      '<a href="./pages/product.html?id=' +
+      '<a href="./product.html?id=' +
       product._id +
       '"><article><img src="' +
       product.imageUrl +
