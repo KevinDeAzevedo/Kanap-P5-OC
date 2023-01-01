@@ -5,7 +5,8 @@ let selectedQuantity = null;
 
 // Template objet produit
 class product {
-	constructor(color, quantity) {
+	constructor(id, color, quantity) {
+    this.id = id;
 		this.color = color;
 		this.quantity = quantity;
 	}
@@ -16,7 +17,7 @@ const queryString = window.location.search;
 
 // Extraction de l'ID avec le constructeur URLSearchParams
 const urlParams = new URLSearchParams(queryString);
-const productID = urlParams.get('id');
+const productId = urlParams.get('id');
 
 gettingProduct();
 
@@ -27,7 +28,7 @@ gettingProduct();
  */
 async function gettingProduct() {
   try {
-    const response = await fetch(`${apiUrl}${productID}`);
+    const response = await fetch(`${apiUrl}${productId}`);
     const data = await response.json();
     makeHtmlProductInfo(data);
   } catch (error) {
@@ -85,20 +86,11 @@ document.getElementById('quantity').addEventListener('input', function(event) {
 });
 
 
-
-
-
 // panier de test
 
 function createObject() {
-  let productAdded = new product(selectedColor, selectedQuantity);
-
-  let selectedProductStringed = JSON.stringify(productAdded); // Transforme l'objet en chaine de caractères
-
-  localStorage.setItem('${productID}',selectedProductStringed); // LocalStorage enregistre sur la session la chaine de caractère
-  console.log(localStorage)
-
+  let productAdded = new product(productId, selectedColor, selectedQuantity);
+  console.log(productAdded)
 }
 
-//
 
