@@ -43,15 +43,12 @@ async function gettingProduct() {
  * On parcourt le tableau de couleurs
  */
 function makeHtmlProductInfo(param) {
-  const classImg = document.getElementsByClassName('item__img');
-  for (let i = 0; i < classImg.length; i++) {
-    classImg[i].innerHTML =
-      '<img src="' +
-      param.imageUrl +
-      '" alt="' +
-      param.altTxt +
-      '">';
-  }
+  document.querySelector('.item__img').innerHTML =
+  '<img src="' +
+  param.imageUrl +
+  '" alt="' +
+  param.altTxt +
+  '">';
 
   document.getElementById('title').textContent = param.name;
   document.getElementById('price').textContent = param.price;
