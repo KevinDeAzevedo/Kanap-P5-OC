@@ -3,7 +3,6 @@ let colorList = '<option value="">--SVP, choisissez une couleur --</option>';
 let selectedColor = '';
 let selectedQuantity = 0;
 
-
 // Récupération de la chaine de requete dans l'URL
 const queryString = window.location.search;
 
@@ -36,64 +35,38 @@ async function gettingProduct() {
  */
 function makeHtmlProductInfo(param) {
   document.querySelector('.item__img').innerHTML =
-  '<img src="' +
-  param.imageUrl +
-  '" alt="' +
-  param.altTxt +
-  '">';
+    '<img src="' + param.imageUrl + '" alt="' + param.altTxt + '">';
 
   document.getElementById('title').textContent = param.name;
   document.getElementById('price').textContent = param.price;
   document.getElementById('description').textContent = param.description;
 
   for (const color of param.colors) {
-    colorList +=
-    '<option value="' +
-    color +
-    '">' +
-    color +
-    '</option>';
+    colorList += '<option value="' + color + '">' + color + '</option>';
   }
   document.getElementById('colors').innerHTML = colorList;
 }
 
-
-
 // evenement bouton
-document.getElementById('addToCart').addEventListener('click', function() {
-  if (selectedQuantity != 0 && selectedColor != ''){
-    addProduct()
+document.getElementById('addToCart').addEventListener('click', function () {
+  if (selectedQuantity != 0 && selectedColor != '') {
+    addProduct();
   } else {
-    return
+    return;
   }
 });
 
 // evenement input couleur
-document.getElementById('colors').addEventListener('input', function(event) {
-  selectedColor = event.target.value
+document.getElementById('colors').addEventListener('input', function (event) {
+  selectedColor = event.target.value;
 });
 
 // evenement input quantité
-document.getElementById('quantity').addEventListener('input', function(event) {
-  selectedQuantity = event.target.value
+document.getElementById('quantity').addEventListener('input', function (event) {
+  selectedQuantity = event.target.value * 1;
 });
 
-
 ////
-
-let shoppingBag = [
-  {
-    "_id": "415b7cacb65d43b2b5c1ff70f3393ad1",
-    "color": "red",
-    "quantity": 1,
-  },
-  {
-    "_id": "415b7cacb65d43b2b5c1ff70f3393ad3",
-    "color": "yellow",
-    "quantity": 1,
-  },
-];
-
 
 /*
 Si ID du produit === à ID dans le tableau && COLOR du produit === à COLOR dans le talbeau
@@ -102,25 +75,50 @@ Si ID du produit === à ID dans le tableau && COLOR du produit === à COLOR dans
 Sauvegarder 
 */
 
+// {_id: '055743915a544fde83cfdfc904935ee7', color: 'Green', quantity: 1}
+
 
 // Ajout du produit en cours au panier
 function addProduct() {
-  for (product of shoppingBag){
-    if (productId === product._id && selectedColor == product.color){
-      product.quantity += selectedQuantity
-      console.log('found!')
-      console.log(shoppingBag)
-      return
-    } else {
-      console.log('not found...')
-      shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
-      console.log(shoppingBag)
-      return 
+  shoppingBag = getCart()
+  if (shoppingBag.length == 0){
+    console.log('le tableau est vide')
+    console.log('et on ajoute le produit actuel')
+    shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
+    console.log(shoppingBag)
+    saveCart(shoppingBag)
+    return 
+  } else {
+    for (product of shoppingBag) {
+      if (productId === product._id && selectedColor == product.color) {
+        console.log('produit deja existant')
+        product.quantity += selectedQuantity
+        console.log(shoppingBag)
+        saveCart(shoppingBag)
+        return
+      } else {
+        console.log('ajout dun nouveau produit')
+        shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
+        console.log(shoppingBag)
+        saveCart(shoppingBag)
+        return
+      }
     }
   }
 }
 
 // Sauvegarder le caddy
-function saveCart(cart){
-  localStorage.setItem("cart",cart)
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+// Obtenir le caddy
+function getCart() {
+  let cart = localStorage.getItem('cart');
+  if (cart == null) {
+    return [];
+  } else {
+    return JSON.parse(cart);
+  }
+}
+

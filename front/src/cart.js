@@ -1,3 +1,5 @@
+/*
+
 function addProduct() {
   let shoppingBag = getCart();
   console.log(shoppingBag)
@@ -58,3 +60,5 @@ function addProduct() {
     }
   }
 }
+
+*/
