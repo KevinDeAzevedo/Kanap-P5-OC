@@ -1,16 +1,8 @@
 const apiUrl = 'http://localhost:3000/api/products/';
 let colorList = '<option value="">--SVP, choisissez une couleur --</option>';
-let selectedColor = null;
-let selectedQuantity = null;
+let selectedColor = '';
+let selectedQuantity = 0;
 
-// Template objet produit
-class product {
-	constructor(id, color, quantity) {
-    this.id = id;
-		this.color = color;
-		this.quantity = quantity;
-	}
-}
 
 // Récupération de la chaine de requete dans l'URL
 const queryString = window.location.search;
@@ -68,8 +60,12 @@ function makeHtmlProductInfo(param) {
 
 
 // evenement bouton
-document.getElementById('addToCart').addEventListener('click', function() { 
-  createObject()
+document.getElementById('addToCart').addEventListener('click', function() {
+  if (selectedQuantity != 0 && selectedColor != ''){
+    addProduct()
+  } else {
+    return
+  }
 });
 
 // evenement input couleur
@@ -83,10 +79,48 @@ document.getElementById('quantity').addEventListener('input', function(event) {
 });
 
 
-// panier de test
+////
 
-function createObject() {
-  let productAdded = new product(productId, selectedColor, selectedQuantity);
-  console.log(productAdded)
+let shoppingBag = [
+  {
+    "_id": "415b7cacb65d43b2b5c1ff70f3393ad1",
+    "color": "red",
+    "quantity": 1,
+  },
+  {
+    "_id": "415b7cacb65d43b2b5c1ff70f3393ad3",
+    "color": "yellow",
+    "quantity": 1,
+  },
+];
+
+
+/*
+Si ID du produit === à ID dans le tableau && COLOR du produit === à COLOR dans le talbeau
+  Alors incrémenter QUANTITY du produit 
+  Sinon ajouter lobjet entier dans le tableau
+Sauvegarder 
+*/
+
+
+// Ajout du produit en cours au panier
+function addProduct() {
+  for (product of shoppingBag){
+    if (productId === product._id && selectedColor == product.color){
+      product.quantity += selectedQuantity
+      console.log('found!')
+      console.log(shoppingBag)
+      return
+    } else {
+      console.log('not found...')
+      shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
+      console.log(shoppingBag)
+      return 
+    }
+  }
 }
 
+// Sauvegarder le caddy
+function saveCart(cart){
+  localStorage.setItem("cart",cart)
+}
