@@ -80,32 +80,19 @@ Sauvegarder
 
 // Ajout du produit en cours au panier
 function addProduct() {
-  shoppingBag = getCart()
-  if (shoppingBag.length == 0){
-    console.log('le tableau est vide')
-    console.log('et on ajoute le produit actuel')
-    shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
-    console.log(shoppingBag)
-    saveCart(shoppingBag)
-    return 
+  let shoppingBag = getCart()
+  let foundProduct = shoppingBag.find(product => product._id === productId && product.color === selectedColor)
+  if (foundProduct != undefined){
+    foundProduct.quantity += selectedQuantity
   } else {
-    for (product of shoppingBag) {
-      if (productId === product._id && selectedColor == product.color) {
-        console.log('produit deja existant')
-        product.quantity += selectedQuantity
-        console.log(shoppingBag)
-        saveCart(shoppingBag)
-        return
-      } else {
-        console.log('ajout dun nouveau produit')
-        shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
-        console.log(shoppingBag)
-        saveCart(shoppingBag)
-        return
-      }
-    }
+    shoppingBag.push({"_id": productId, "color": selectedColor, "quantity":selectedQuantity})
   }
+  saveCart(shoppingBag)
 }
+
+/*
+Si le tableau est vide un 
+*/
 
 // Sauvegarder le caddy
 function saveCart(cart) {
