@@ -17,7 +17,10 @@ async function mergeProduct() {
     console.error(error);
   }
   makeHtmlCartList(allCart);
+  makeDeleteButtons()  
 }
+
+// removeProduct("109319302912020291")
 
 // Rendu en HTML des produits du panier
 function makeHtmlCartList(param) {
@@ -38,7 +41,19 @@ function makeHtmlCartList(param) {
       product.price +
       ' €</p></div><div class="cart__item__content__settings"><div class="cart__item__content__settings__quantity"><p>Qté : </p><input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="' +
       product.quantity +
-      '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem">Supprimer</p></div></div></div></article>';
+      '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" data-id="' + product._id + '">Supprimer</p></div></div></div></article>';
   }
   document.getElementById('cart__items').innerHTML = cartList;
+}
+
+// Rendre les boutons 'Supprimer' fonctionnels
+function makeDeleteButtons(){
+  const buttons = document.querySelectorAll('.deleteItem');
+  for (let button of buttons){
+    button.addEventListener('click', function() {
+      const id = button.dataset.id;
+      removeProduct(id)
+      location.reload()
+  });
+  }
 }
