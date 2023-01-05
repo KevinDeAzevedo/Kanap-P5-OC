@@ -66,22 +66,10 @@ document.getElementById('quantity').addEventListener('input', function (event) {
   selectedQuantity = event.target.value * 1;
 });
 
-////
-
-/*
-Si ID du produit === à ID dans le tableau && COLOR du produit === à COLOR dans le talbeau
-  Alors incrémenter QUANTITY du produit 
-  Sinon ajouter lobjet entier dans le tableau
-Sauvegarder 
-*/
-
-// {_id: '055743915a544fde83cfdfc904935ee7', color: 'Green', quantity: 1}
-
-
 // Ajout du produit en cours au panier
 function addProduct() {
   let shoppingBag = getCart()
-  let foundProduct = shoppingBag.find(product => product._id === productId && product.color === selectedColor)
+  let foundProduct = shoppingBag.find(item => item._id === productId && item.color === selectedColor)
   if (foundProduct != undefined){
     foundProduct.quantity += selectedQuantity
   } else {
@@ -90,22 +78,4 @@ function addProduct() {
   saveCart(shoppingBag)
 }
 
-/*
-Si le tableau est vide un 
-*/
-
-// Sauvegarder le caddy
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-// Obtenir le caddy
-function getCart() {
-  let cart = localStorage.getItem('cart');
-  if (cart == null) {
-    return [];
-  } else {
-    return JSON.parse(cart);
-  }
-}
 
