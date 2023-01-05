@@ -15,4 +15,9 @@ function getCart() {
   }
 }
 
-// Suuprimer un produit du caddy
+// Supprimer un produit du caddy
+function removeProduct(param){
+  let cart = getCart()
+  cart = cart.filter(item => item._id != param._id)
+  saveCart(cart)
+}
