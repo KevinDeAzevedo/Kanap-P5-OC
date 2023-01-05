@@ -1,4 +1,3 @@
-const apiUrl = 'http://localhost:3000/api/products/';
 let colorList = '<option value="">--SVP, choisissez une couleur --</option>';
 let selectedColor = '';
 let selectedQuantity = 0;
@@ -19,7 +18,7 @@ gettingProduct();
  */
 async function gettingProduct() {
   try {
-    const response = await fetch(`${apiUrl}${productId}`);
+    const response = await fetch(`${apiUrl}/${productId}`);
     const data = await response.json();
     makeHtmlProductInfo(data);
   } catch (error) {
