@@ -45,7 +45,7 @@ function makeHtmlCartList(param) {
   makeQteInputs()
 }
 
-// Rendre les boutons 'Supprimer' fonctionnels
+// Boutons de suppression dynamiques
 function makeDeleteButtons(){
   const articles = document.querySelectorAll('article')
   for (let article of articles){
@@ -59,8 +59,7 @@ function makeDeleteButtons(){
   }
 }
 
-
-// Rendre les input qté fonctionnels
+// Inputs quantités dynamiques
 function makeQteInputs(){
   const articles = document.querySelectorAll('article')
   for (let article of articles){
