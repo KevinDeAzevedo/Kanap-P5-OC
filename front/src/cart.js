@@ -21,6 +21,6 @@ function removeProduct(idParam, colorParam){
   cart = cart.filter(item => item._id !== idParam || item.color !== colorParam)
   console.log(cart)
   saveCart(cart)
-
 }
+
 
