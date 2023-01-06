@@ -11,7 +11,6 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
-      numberOfProduct += product.quantity
     }
   } catch (error) {
     console.error(error);
