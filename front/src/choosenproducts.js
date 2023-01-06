@@ -3,7 +3,6 @@ mergeProduct();
 
 async function mergeProduct() {
   let allCart = getCart();
-  console.log(allCart);
   try {
     for (let product of allCart) {
       const response = await fetch(`${apiUrl}/${product._id}`);
@@ -12,12 +11,14 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
+      numberOfProduct += product.quantity
     }
   } catch (error) {
     console.error(error);
   }
   makeHtmlCartList(allCart);
 }
+
 
 // Rendu en HTML des produits du panier
 function makeHtmlCartList(param) {
@@ -54,7 +55,7 @@ function makeDeleteButtons(){
     const button = article.querySelector('.deleteItem')
     button.addEventListener('click', function() {
       removeProduct(id, color)
-      location.reload()
+      article.style.display = "none"
   });
   }
 }
@@ -66,9 +67,11 @@ function makeQteInputs(){
     const id = article.dataset.id
     const color = article.dataset.color
     article.querySelector('.itemQuantity').addEventListener('change', function (event) {
-      newQuantity = event.target.value * 1;
+      let newQuantity = event.target.value * 1;
       changeQuantity(id, color, newQuantity)
     });
   }
 }
+
+
 
