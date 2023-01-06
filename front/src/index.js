@@ -40,5 +40,3 @@ function makeHtmlList(param) {
 
   document.getElementById('items').innerHTML = productList;
 }
-
-console.log(localStorage)
