@@ -42,6 +42,7 @@ function makeHtmlCartList(param) {
   }
   document.getElementById('cart__items').innerHTML = cartList;
   makeDeleteButtons()
+  makeQteInputs()
 }
 
 // Rendre les boutons 'Supprimer' fonctionnels
@@ -55,6 +56,20 @@ function makeDeleteButtons(){
       removeProduct(id, color)
       location.reload()
   });
+  }
+}
+
+
+// Rendre les input qté fonctionnels
+function makeQteInputs(){
+  const articles = document.querySelectorAll('article')
+  for (let article of articles){
+    const id = article.dataset.id
+    const color = article.dataset.color
+    article.querySelector('.itemQuantity').addEventListener('change', function (event) {
+      newQuantity = event.target.value * 1;
+      console.log(id, color, newQuantity)
+    });
   }
 }
 
