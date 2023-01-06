@@ -23,4 +23,13 @@ function removeProduct(idParam, colorParam){
   saveCart(cart)
 }
 
+// Changement de quantité d'un produit du caddy
+function changeQuantity(idParam, colorParam, quantityParam){
+  let cart = getCart()
+  let foundProduct = cart.find(item => item._id == idParam && item.color == colorParam)
+  if (foundProduct != undefined){
+    foundProduct.quantity = quantityParam
+  }
+  saveCart(cart)
+}
 

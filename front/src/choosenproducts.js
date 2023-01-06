@@ -68,7 +68,7 @@ function makeQteInputs(){
     const color = article.dataset.color
     article.querySelector('.itemQuantity').addEventListener('change', function (event) {
       newQuantity = event.target.value * 1;
-      console.log(id, color, newQuantity)
+      changeQuantity(id, color, newQuantity)
     });
   }
 }
