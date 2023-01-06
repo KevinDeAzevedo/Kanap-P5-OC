@@ -41,7 +41,7 @@ function makeHtmlCartList(param) {
       product.price +
       ' €</p></div><div class="cart__item__content__settings"><div class="cart__item__content__settings__quantity"><p>Qté : </p><input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="' +
       product.quantity +
-      '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" data-id="' + product._id + '">Supprimer</p></div></div></div></article>';
+      '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" data-id="' + product._id + '" data-color="' + product.color + '">Supprimer</p></div></div></div></article>';
   }
   document.getElementById('cart__items').innerHTML = cartList;
 }
@@ -52,7 +52,8 @@ function makeDeleteButtons(){
   for (let button of buttons){
     button.addEventListener('click', function() {
       const id = button.dataset.id;
-      removeProduct(id)
+      const color = button.dataset.color;
+      removeProduct(id, color)
       location.reload()
   });
   }

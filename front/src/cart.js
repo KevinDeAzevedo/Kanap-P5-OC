@@ -16,9 +16,11 @@ function getCart() {
 }
 
 // Supprimer un produit du caddy
-function removeProduct(param){
+function removeProduct(idParam, colorParam){
   let cart = getCart()
-  cart = cart.filter(item => item._id != param)
+  cart = cart.filter(item => item._id !== idParam || item.color !== colorParam)
+  console.log(cart)
   saveCart(cart)
+
 }
 
