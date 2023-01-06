@@ -42,7 +42,6 @@ function makeHtmlCartList(param) {
   }
   document.getElementById('cart__items').innerHTML = cartList;
   makeDeleteButtons()
-  queryTest()
 }
 
 // Rendre les boutons 'Supprimer' fonctionnels
