@@ -1,9 +1,6 @@
 // Obtenir les infos des produits situés dans le caddy et ajouter les données manquantes
 mergeProduct();
 
-let totalPrice = 0;
-let totalProducts = 0;
-
 async function mergeProduct() {
   let allCart = getCart();
   try {
@@ -14,6 +11,7 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
+
     }
   } catch (error) {
     console.error(error);
@@ -59,6 +57,7 @@ function makeDeleteButtons(){
     button.addEventListener('click', function() {
       removeProduct(id, color)
       article.style.display = "none"
+      mergeProduct()
   });
   }
 }
@@ -79,10 +78,15 @@ function makeQteInputs(){
 }
 
 // Calcul du total
-function calculTotal(panier){
-  for (let product of panier){
-    console.log(product.price, product.quantity)
+function calculTotal(allCartParam){
+  let totalPrice = 0;
+  let totalProducts = 0;
+  for (let product of allCartParam){
+    totalPrice += product.price * product.quantity
+    totalProducts += product.quantity
   }
+  document.querySelector('#totalQuantity').textContent = totalProducts
+  document.querySelector('#totalPrice').textContent = totalPrice
 }
 
 
