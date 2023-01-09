@@ -120,34 +120,37 @@ class contact {
   }
 }
 
+class order {
+  constructor(contact, productsIds){
+    this.contact = contact
+    this.products = productsIds
+  }
+}
+
 document.querySelector('#order').addEventListener('click', function(event){
   if(validateEmail(email)){
     // On envoie
-    const formulaire = new contact(firstName, lastName, address, city, email)
-    console.log(formulaire)
+    const contactObject = new contact(firstName, lastName, address, city, email)
+    let productsIds = []
+    createArrayProducts(productsIds)
+    const orderObjects = new order(contactObject, productsIds)
+    console.log(JSON.stringify(orderObjects))
   } else {
     alert("Email invalide");
     // On ne fait rien
   }
 })
 
+// Obtention des id du panier et les ajouter au tableau products
+function createArrayProducts(idParam){
+  let allCart = getCart();
+  for (let product of allCart){
+    idParam.push(product._id)
+  }
+}
+
 // Validation de l'email avec Regex
 function validateEmail(emailParam){
   var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
   return emailReg.test(emailParam);
 }
-
-
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */

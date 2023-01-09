@@ -1,17 +1,8 @@
-[
-  {
-    "_id": "107fb5b75607497b96722bda5b504926",
-    "color": "Blue",
-    "quantity": 2,
-  },
-  {
-    "_id": "415b7cacb65d43b2b5c1ff70f3393ad1",
-    "color": "red",
-    "quantity": 1,
-  },
-  {
-    "_id": "415b7cacb65d43b2b5c1ff70f3393ad1",
-    "color": "yellow",
-    "quantity": 1,
-  },
-]
+"contact": {
+  "firstName": "kevin",
+  "lastName": "De Azevedo",
+  "address": "51 Cours Lamarque",
+  "city": "Arcachon",
+  "email": "deaz@gmail.com"
+},
+"products": ["055743915a544fde83cfdfc904935ee7"]
