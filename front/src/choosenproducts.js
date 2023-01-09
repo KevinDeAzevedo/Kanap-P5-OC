@@ -11,14 +11,13 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
-
     }
   } catch (error) {
     console.error(error);
   }
   makeHtmlCartList(allCart);
   // Calcul du total
-  calculTotal(allCart)
+  calculTotal(allCart);
 }
 
 // Rendu en HTML des produits du panier
@@ -43,114 +42,129 @@ function makeHtmlCartList(param) {
       '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" ">Supprimer</p></div></div></div></article>';
   }
   document.getElementById('cart__items').innerHTML = cartList;
-  makeDeleteButtons()
-  makeQteInputs()
+  makeDeleteButtons();
+  makeQteInputs();
 }
 
 // Boutons de suppression dynamiques
-function makeDeleteButtons(){
-  const articles = document.querySelectorAll('article')
-  for (let article of articles){
-    const id = article.dataset.id
-    const color = article.dataset.color
-    const button = article.querySelector('.deleteItem')
-    button.addEventListener('click', function() {
-      removeProduct(id, color)
-      article.remove()
-      mergeProduct()
-  });
-  }
-}
-
-// Inputs quantités dynamiques
-function makeQteInputs(){
-  const articles = document.querySelectorAll('article')
-  for (let article of articles){
-    const id = article.dataset.id
-    const color = article.dataset.color
-    article.querySelector('.itemQuantity').addEventListener('change', function (event) {
-      let newQuantity = event.target.value * 1;
-      if (newQuantity > 100 || newQuantity < 0){
-        article.querySelector('.itemQuantity').style.color = "red"
-        alert('Quantité invalide')
-      } else {
-        changeQuantity(id, color, newQuantity)
-        mergeProduct()
-      }
+function makeDeleteButtons() {
+  const articles = document.querySelectorAll('article');
+  for (let article of articles) {
+    const id = article.dataset.id;
+    const color = article.dataset.color;
+    const button = article.querySelector('.deleteItem');
+    button.addEventListener('click', function () {
+      removeProduct(id, color);
+      article.remove();
+      mergeProduct();
     });
   }
 }
 
+// Inputs quantités dynamiques
+function makeQteInputs() {
+  const articles = document.querySelectorAll('article');
+  for (let article of articles) {
+    const id = article.dataset.id;
+    const color = article.dataset.color;
+    article
+      .querySelector('.itemQuantity')
+      .addEventListener('change', function (event) {
+        let newQuantity = event.target.value * 1;
+        if (newQuantity > 100 || newQuantity < 0) {
+          article.querySelector('.itemQuantity').style.color = 'red';
+          alert('Quantité invalide');
+        } else {
+          changeQuantity(id, color, newQuantity);
+          mergeProduct();
+        }
+      });
+  }
+}
+
 // Calcul du total
-function calculTotal(allCartParam){
+function calculTotal(allCartParam) {
   let totalPrice = 0;
   let totalProducts = 0;
-  for (let product of allCartParam){
-    totalPrice += product.price * product.quantity
-    totalProducts += product.quantity
+  for (let product of allCartParam) {
+    totalPrice += product.price * product.quantity;
+    totalProducts += product.quantity;
   }
-  document.querySelector('#totalQuantity').textContent = totalProducts
-  document.querySelector('#totalPrice').textContent = totalPrice
+  document.querySelector('#totalQuantity').textContent = totalProducts;
+  document.querySelector('#totalPrice').textContent = totalPrice;
 }
 
 //Formulaire
-document.querySelector('#firstName').addEventListener('input', function(event) {
-  firstName = event.target.value;  
+document
+  .querySelector('#firstName')
+  .addEventListener('input', function (event) {
+    firstName = event.target.value;
+  });
+document.querySelector('#lastName').addEventListener('input', function (event) {
+  lastName = event.target.value;
 });
-document.querySelector('#lastName').addEventListener('input', function(event) {
-  lastName = event.target.value;  
+document.querySelector('#address').addEventListener('input', function (event) {
+  address = event.target.value;
 });
-document.querySelector('#address').addEventListener('input', function(event) {
-  address = event.target.value;  
+document.querySelector('#city').addEventListener('input', function (event) {
+  city = event.target.value;
 });
-document.querySelector('#city').addEventListener('input', function(event) {
-  city = event.target.value;  
+document.querySelector('#email').addEventListener('input', function (event) {
+  email = event.target.value;
 });
-document.querySelector('#email').addEventListener('input', function(event) {
-  email = event.target.value;  
-});
-
-class contact {
-  constructor(firstName, lastName, address, city, email){
-    this.firstName = firstName
-    this.lastName = lastName
-    this.address = address
-    this.city = city
-    this.email = email
-  }
-}
 
 class order {
-  constructor(contact, productsIds){
-    this.contact = contact
-    this.products = productsIds
+  constructor(contactObject, productsIds) {
+    this.contact = contactObject;
+    this.products = productsIds;
   }
 }
 
-document.querySelector('#order').addEventListener('click', function(event){
-  if(validateEmail(email)){
+document.querySelector('#order').addEventListener('click', function (event) {
+  if (validateEmail(email)) {
     // On envoie
-    const contactObject = new contact(firstName, lastName, address, city, email)
-    let productsIds = []
-    createArrayProducts(productsIds)
-    const orderObjects = new order(contactObject, productsIds)
+    const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
+    let productsIds = [];
+    createArrayProducts(productsIds);
+    const orderObjects = new order(
+      contactObject,
+      productsIds
+    );
     console.log(JSON.stringify(orderObjects))
+    sendRequestOrder(orderObjects);
+    event.preventDefault()
   } else {
-    alert("Email invalide");
+    alert('Email invalide');
     // On ne fait rien
   }
-})
+});
 
 // Obtention des id du panier et les ajouter au tableau products
-function createArrayProducts(idParam){
+function createArrayProducts(idParam) {
   let allCart = getCart();
-  for (let product of allCart){
-    idParam.push(product._id)
+  for (let product of allCart) {
+    idParam.push(product._id);
   }
 }
 
 // Validation de l'email avec Regex
-function validateEmail(emailParam){
-  var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+function validateEmail(emailParam) {
+  var emailReg = new RegExp(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i
+  );
   return emailReg.test(emailParam);
 }
+
+// Envoi de la demande
+async function sendRequestOrder(objectParam){
+  let response = await fetch('http://localhost:3000/api/products/order', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(objectParam)
+  });
+  let result = await response.json();
+  window.location.href = `./confirmation.html?order-id=${result.orderId}`
+}
+
