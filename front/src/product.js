@@ -48,10 +48,17 @@ function makeHtmlProductInfo(param) {
 
 // evenement bouton
 document.getElementById('addToCart').addEventListener('click', function () {
-  if (selectedQuantity != 0 && selectedColor != '') {
-    addProduct();
-  } else {
-    return;
+  if (selectedColor == ''){
+    alert('couleur non sélectionnée')
+  } else if (selectedQuantity <= 0) {
+    alert('quantité trop faible')
+  } else if (selectedQuantity > 100){
+    alert('quantité trop grande, pas plus de 100 !')
+  } else if (selectedQuantity > 0 && selectedColor != ''){
+    addProduct()
+    if (window.confirm("Aller voir le panier ?")) {
+      window.open("cart.html");
+    }
   }
 });
 
@@ -67,8 +74,8 @@ document.getElementById('quantity').addEventListener('input', function (event) {
 
 // Ajout du produit en cours au panier
 function addProduct() {
-  let shoppingBag = getCart()
-  let foundProduct = shoppingBag.find(item => item._id === productId && item.color === selectedColor)
+  const shoppingBag = getCart()
+  const foundProduct = shoppingBag.find(item => item._id === productId && item.color === selectedColor)
   if (foundProduct != undefined){
     foundProduct.quantity += selectedQuantity
   } else {
