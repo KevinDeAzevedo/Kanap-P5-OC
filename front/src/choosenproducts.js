@@ -70,9 +70,13 @@ function makeQteInputs(){
     const color = article.dataset.color
     article.querySelector('.itemQuantity').addEventListener('change', function (event) {
       let newQuantity = event.target.value * 1;
-      changeQuantity(id, color, newQuantity)
-      //mise à jour de allCart
-      mergeProduct()
+      if (newQuantity > 100 || newQuantity < 0){
+        alert('Quantité invalide')
+      } else {
+        changeQuantity(id, color, newQuantity)
+        //mise à jour de allCart
+        mergeProduct()
+      }
     });
   }
 }
