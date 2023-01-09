@@ -93,4 +93,45 @@ function calculTotal(allCartParam){
   document.querySelector('#totalPrice').textContent = totalPrice
 }
 
+//Formulaire
+document.querySelector('#firstName').addEventListener('input', function(event) {
+  firstName = event.target.value;  
+});
+document.querySelector('#lastName').addEventListener('input', function(event) {
+  lastName = event.target.value;  
+});
+document.querySelector('#address').addEventListener('input', function(event) {
+  address = event.target.value;  
+});
+document.querySelector('#city').addEventListener('input', function(event) {
+  city = event.target.value;  
+});
+document.querySelector('#email').addEventListener('input', function(event) {
+  email = event.target.value;  
+});
 
+class contact {
+  constructor(firstName, lastName, address, city, email){
+    this.firstName = firstName
+    this.lastName = lastName
+    this.address = address
+    this.city = city
+    this.email = email
+  }
+}
+document.querySelector('#order').addEventListener('click', function(event){
+  if(validateEmail(email)){
+    // On envoie
+    const formulaire = new contact(firstName, lastName, address, city, email)
+    console.log(formulaire)
+  } else {
+    alert("Email invalide");
+    // On ne fait rien
+  }
+})
+
+// Validation de l'email avec Regex
+function validateEmail(emailParam){
+  var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+  return emailReg.test(emailParam);
+}
