@@ -56,7 +56,7 @@ function makeDeleteButtons(){
     const button = article.querySelector('.deleteItem')
     button.addEventListener('click', function() {
       removeProduct(id, color)
-      article.style.display = "none"
+      article.remove()
       mergeProduct()
   });
   }
