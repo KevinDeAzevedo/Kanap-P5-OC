@@ -71,10 +71,10 @@ function makeQteInputs(){
     article.querySelector('.itemQuantity').addEventListener('change', function (event) {
       let newQuantity = event.target.value * 1;
       if (newQuantity > 100 || newQuantity < 0){
+        article.querySelector('.itemQuantity').style.color = "red"
         alert('Quantité invalide')
       } else {
         changeQuantity(id, color, newQuantity)
-        //mise à jour de allCart
         mergeProduct()
       }
     });
