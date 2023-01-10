@@ -1,29 +1,23 @@
-const apiUrl = 'http://localhost:3000/api/products';
-let productList = '';
-
 fetchData();
 
-/**
- * On attend l'appel à l'API
- * On attend la réponse en JSON dans 'data'
- * On appel la fonction 'makeHtmlList' avec 'data' en argument
- */
+// Récupération des données dans L'API backend
 async function fetchData() {
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch('http://localhost:3000/api/products');
     const data = await response.json();
-    makeHtmlList(data);
+    makeHtmlList(data)
   } catch (error) {
     console.error(error);
   }
 }
 
 /**
- * Pour chaque produits présent dans 'data', on ajoute une string HTML dans 'productList'
- * On insert dans l'ID 'items' la string productList
+ * Construction de la liste des produit en HTML :
+ * @param {Object} dataParam Les produits
  */
-function makeHtmlList(param) {
-  for (const product of param) {
+function makeHtmlList(dataParam) {
+  let productList = '';
+  for (const product of dataParam) {
     productList +=
       '<a href="./product.html?id=' +
       product._id +
@@ -37,6 +31,5 @@ function makeHtmlList(param) {
       product.description +
       '</p></article></a>';
   }
-
   document.getElementById('items').innerHTML = productList;
 }
