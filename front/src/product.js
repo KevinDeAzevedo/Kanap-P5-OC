@@ -11,11 +11,7 @@ const productId = urlParams.get('id');
 
 gettingProduct();
 
-/**
- * On attend l'appel à l'API en y mettant l'ID extrait de l'URL
- * On attend la réponse en JSON dans 'data'
- * On appel la fonction 'makeHtmlProductInfo' avec 'data' en argument
- */
+// Récupération des données du produit de la page dans L'API backend
 async function gettingProduct() {
   try {
     const response = await fetch(`${apiUrl}/${productId}`);
@@ -27,27 +23,24 @@ async function gettingProduct() {
 }
 
 /**
- * Toutes les classes 'item__img' sont mise dans un tableau 'classImg'
- * On parcourt le tableau 'classImg' en y insérant une balise img
- * Pour chaque ID on y insert du texte
- * On parcourt le tableau de couleurs
+ * 
+ * @param {Object} dataParam Le produit avec son image, alt, nom, prix, description, couleur
  */
-function makeHtmlProductInfo(param) {
+function makeHtmlProductInfo(dataParam) {
   document.querySelector('.item__img').innerHTML =
-    '<img src="' + param.imageUrl + '" alt="' + param.altTxt + '">';
-
-  document.getElementById('title').textContent = param.name;
-  document.getElementById('price').textContent = param.price;
-  document.getElementById('description').textContent = param.description;
-
-  for (const color of param.colors) {
+    '<img src="' + dataParam.imageUrl + '" alt="' + dataParam.altTxt + '">';
+  document.getElementById('title').textContent = dataParam.name;
+  document.getElementById('price').textContent = dataParam.price;
+  document.getElementById('description').textContent = dataParam.description;
+  for (const color of dataParam.colors) {
     colorList += '<option value="' + color + '">' + color + '</option>';
   }
   document.getElementById('colors').innerHTML = colorList;
 }
 
-// evenement bouton
+// Evenement bouton Ajouter au Panier
 document.getElementById('addToCart').addEventListener('click', function () {
+  // Conditionner les valeurs des inputs
   if (selectedColor == ''){
     alert('couleur non sélectionnée')
   } else if (selectedQuantity <= 0) {
@@ -62,12 +55,12 @@ document.getElementById('addToCart').addEventListener('click', function () {
   }
 });
 
-// evenement input couleur
+// Evenement input couleur
 document.getElementById('colors').addEventListener('input', function (event) {
   selectedColor = event.target.value;
 });
 
-// evenement input quantité
+// Evenement input quantité
 document.getElementById('quantity').addEventListener('input', function (event) {
   selectedQuantity = event.target.value * 1;
 });
