@@ -108,9 +108,8 @@ function calculTotal(allCartParam) {
 
 // Récupération des valeurs input du formulaire
 document
-  .querySelector('#firstName')
-  .addEventListener('input', function (event) {
-    firstName = event.target.value;
+  .querySelector('#firstName').addEventListener('input', function (event) {
+  firstName = event.target.value;
   });
 document.querySelector('#lastName').addEventListener('input', function (event) {
   lastName = event.target.value;
@@ -135,7 +134,8 @@ class order {
 
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
-  if (validateEmail(email)) {
+  event.preventDefault()
+  if (validateEmail(email) && validateFirstName(firstName)) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -148,9 +148,7 @@ document.querySelector('#order').addEventListener('click', function (event) {
     );
     // Envoie de l'objet vers l'API
     sendRequestOrder(orderObjects);
-    event.preventDefault()
   } else {
-    alert('Email invalide');
     // On ne fait rien
   }
 });
@@ -167,15 +165,33 @@ function createArrayProducts(idParam) {
 }
 
 /**
- * Validation de l'email avec Regex
- * @param {*} emailParam 
- * @return {boolean} 
+ * Validation de l'email par Regex
+ * @param {string} emailParam 
+ * @returns {boolean} 
  */
-function validateEmail(emailParam) {
-  var emailReg = new RegExp(
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i
-  );
-  return emailReg.test(emailParam);
+function validateEmail(emailParam){
+  const emailReg = new RegExp(/^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i) // Format e-mail
+  if (emailReg.test(emailParam)){
+    return emailReg.test(emailParam);
+  } else {
+    alert('Email invalide');
+    return emailReg.test(emailParam);
+  }
+}
+
+/**
+ * Validation du Prénom par Regex
+ * @param {string} firstNameParam
+ * @returns {boolean} 
+ */
+function validateFirstName(firstNameParam){
+  const firstNameReg = new RegExp(/^(?!.*[0-9])([a-z]+)(\s)?([a-z]*)/i)
+  if (firstNameReg.test(firstNameParam)){
+    return firstNameReg.test(firstNameParam);
+  } else {
+    alert('Prénom invalide');
+    return firstNameReg.test(firstNameParam);
+  }
 }
 
 /**
@@ -194,4 +210,3 @@ async function sendRequestOrder(objectParam){
   // Redirection vers la page confirmation en passant orderId reçu en reponse de l'API
   window.location.href = `./confirmation.html?order-id=${result.orderId}`
 }
-
