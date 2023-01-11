@@ -1,11 +1,11 @@
-// Obtenir les infos des produits situés dans le caddy et ajouter les données manquantes
 mergeProduct();
 
+// Fusionner les données du LocalStorage et les données du l'API
 async function mergeProduct() {
   let allCart = getCart();
   try {
     for (let product of allCart) {
-      const response = await fetch(`${apiUrl}/${product._id}`);
+      const response = await fetch(`http://localhost:3000/api/products/${product._id}`);
       const data = await response.json();
       product.price = data.price;
       product.name = data.name;
@@ -15,15 +15,19 @@ async function mergeProduct() {
   } catch (error) {
     console.error(error);
   }
+  // Construction de la liste des produits situé dans le panier en HTML
   makeHtmlCartList(allCart);
-  // Calcul du total
+  // Calcul du prix et quantité total
   calculTotal(allCart);
 }
 
-// Rendu en HTML des produits du panier
-function makeHtmlCartList(param) {
+/**
+ * Rendu en HTML des produits du panier
+ * @param {Array<Object>} cartParam 
+ */
+function makeHtmlCartList(cartParam) {
   let cartList = '';
-  for (const product of param) {
+  for (const product of cartParam) {
     cartList +=
       '<article class="cart__item" data-id="' +
       product._id +
@@ -42,7 +46,9 @@ function makeHtmlCartList(param) {
       '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" ">Supprimer</p></div></div></div></article>';
   }
   document.getElementById('cart__items').innerHTML = cartList;
+  // Construction des boutons de suppression
   makeDeleteButtons();
+  // Construction des input quantité
   makeQteInputs();
 }
 
@@ -54,8 +60,11 @@ function makeDeleteButtons() {
     const color = article.dataset.color;
     const button = article.querySelector('.deleteItem');
     button.addEventListener('click', function () {
+      // Suppression du produit
       removeProduct(id, color);
+      // Suppression du produit dans l'interface HTML
       article.remove();
+      // Fusion du LocalStorage et API
       mergeProduct();
     });
   }
@@ -75,14 +84,16 @@ function makeQteInputs() {
           article.querySelector('.itemQuantity').style.color = 'red';
           alert('Quantité invalide');
         } else {
+          // Mise à jour de la quantité
           changeQuantity(id, color, newQuantity);
+          // Fusion du LocalStorage et API
           mergeProduct();
         }
       });
   }
 }
 
-// Calcul du total
+// Calcul du prix et quantité total
 function calculTotal(allCartParam) {
   let totalPrice = 0;
   let totalProducts = 0;
@@ -90,11 +101,12 @@ function calculTotal(allCartParam) {
     totalPrice += product.price * product.quantity;
     totalProducts += product.quantity;
   }
+  // Construction de l'interface HTML
   document.querySelector('#totalQuantity').textContent = totalProducts;
   document.querySelector('#totalPrice').textContent = totalPrice;
 }
 
-//Formulaire
+// Récupération des valeurs input du formulaire
 document
   .querySelector('#firstName')
   .addEventListener('input', function (event) {
@@ -113,6 +125,7 @@ document.querySelector('#email').addEventListener('input', function (event) {
   email = event.target.value;
 });
 
+// Préparation de l'objet à envoyer à l'API
 class order {
   constructor(contactObject, productsIds) {
     this.contact = contactObject;
@@ -120,17 +133,20 @@ class order {
   }
 }
 
+// Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   if (validateEmail(email)) {
-    // On envoie
+    // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
+    // Parcourir les produits du panier et les stocker le tableau ci-dessus
     createArrayProducts(productsIds);
+    // Création de l'objet order, avec les objets contactObject et productsIds
     const orderObjects = new order(
       contactObject,
       productsIds
     );
-    console.log(JSON.stringify(orderObjects))
+    // Envoie de l'objet vers l'API
     sendRequestOrder(orderObjects);
     event.preventDefault()
   } else {
@@ -139,7 +155,10 @@ document.querySelector('#order').addEventListener('click', function (event) {
   }
 });
 
-// Obtention des id du panier et les ajouter au tableau products
+/**
+ * Stocker les ids du panier
+ * @param {Array<string>} idParam 
+ */
 function createArrayProducts(idParam) {
   let allCart = getCart();
   for (let product of allCart) {
@@ -147,7 +166,11 @@ function createArrayProducts(idParam) {
   }
 }
 
-// Validation de l'email avec Regex
+/**
+ * Validation de l'email avec Regex
+ * @param {*} emailParam 
+ * @return {boolean} 
+ */
 function validateEmail(emailParam) {
   var emailReg = new RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i
@@ -155,7 +178,10 @@ function validateEmail(emailParam) {
   return emailReg.test(emailParam);
 }
 
-// Envoi de la demande
+/**
+ * Envoi de l'objet 'order' en POST vers l'API
+ * @param {Object} objectParam Objet 'order'
+ */
 async function sendRequestOrder(objectParam){
   let response = await fetch('http://localhost:3000/api/products/order', {
     method: 'POST',
@@ -165,6 +191,7 @@ async function sendRequestOrder(objectParam){
     body: JSON.stringify(objectParam)
   });
   let result = await response.json();
+  // Redirection vers la page confirmation en passant orderId reçu en reponse de l'API
   window.location.href = `./confirmation.html?order-id=${result.orderId}`
 }
 

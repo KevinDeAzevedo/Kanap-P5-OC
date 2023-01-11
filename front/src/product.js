@@ -14,7 +14,7 @@ gettingProduct();
 // Récupération des données du produit de la page dans L'API backend
 async function gettingProduct() {
   try {
-    const response = await fetch(`${apiUrl}/${productId}`);
+    const response = await fetch(`http://localhost:3000/api/products/${productId}`);
     const data = await response.json();
     makeHtmlProductInfo(data);
   } catch (error) {

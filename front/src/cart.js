@@ -1,11 +1,15 @@
-const apiUrl = 'http://localhost:3000/api/products';
-
-// Sauvegarder le caddy
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
+/**
+ * Sauvegarder le caddy
+ * @param {Array<Object>} cartParam
+ */
+function saveCart(cartParam) {
+  localStorage.setItem('cart', JSON.stringify(cartParam));
 }
 
-// Obtenir le caddy
+/**
+ * Obtenir le caddy
+ * @return {Array} Tableau vide ou contenant des Objets
+ */
 function getCart() {
   let cart = localStorage.getItem('cart');
   if (cart == null) {
@@ -15,14 +19,23 @@ function getCart() {
   }
 }
 
-// Supprimer un produit du caddy
+/**
+ * Supprimer un produit du caddy
+ * @param {string} idParam Id
+ * @param {string} colorParam Couleur
+ */
 function removeProduct(idParam, colorParam){
   let cart = getCart()
   cart = cart.filter(item => item._id !== idParam || item.color !== colorParam)
   saveCart(cart)
 }
 
-// Changement de quantité d'un produit du caddy
+/**
+ * Changement de quantité d'un produit du caddy
+ * @param {string} idParam Id
+ * @param {string} colorParam Couleur
+ * @param {number} quantityParam Quantité
+ */
 function changeQuantity(idParam, colorParam, quantityParam){
   let cart = getCart()
   let foundProduct = cart.find(item => item._id == idParam && item.color == colorParam)
