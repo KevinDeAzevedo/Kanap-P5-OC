@@ -135,7 +135,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (validateEmail(email) && validateFirstName(firstName)) {
+  if (validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide')) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -180,17 +180,18 @@ function validateEmail(emailParam){
 }
 
 /**
- * Validation du Prénom par Regex
- * @param {string} firstNameParam
+ * Validation du Prénom et Nom par Regex
+ * @param {string} NameParam
+ * @param {string} alertParam
  * @returns {boolean} 
  */
-function validateFirstName(firstNameParam){
+function validateName(NameParam, alertParam){
   const firstNameReg = new RegExp(/^(?!.*[0-9])([a-z]+)(\s)?([a-z]*)/i)
-  if (firstNameReg.test(firstNameParam)){
-    return firstNameReg.test(firstNameParam);
+  if (firstNameReg.test(NameParam)){
+    return firstNameReg.test(NameParam);
   } else {
-    alert('Prénom invalide');
-    return firstNameReg.test(firstNameParam);
+    alert(alertParam);
+    return firstNameReg.test(NameParam);
   }
 }
 
