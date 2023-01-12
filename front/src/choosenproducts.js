@@ -135,7 +135,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide')) {
+  if (validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -181,17 +181,33 @@ function validateEmail(emailParam){
 
 /**
  * Validation du Prénom et Nom par Regex
- * @param {string} NameParam
- * @param {string} alertParam
+ * @param {string} nameParam
+ * @param {string} alertMessageParam
  * @returns {boolean} 
  */
-function validateName(NameParam, alertParam){
-  const firstNameReg = new RegExp(/^(?!.*[0-9])([a-z]+)(\s)?([a-z]*)/i)
-  if (firstNameReg.test(NameParam)){
-    return firstNameReg.test(NameParam);
+function validateName(nameParam, alertMessageParam){
+  const firstNameReg = new RegExp(/^[a-zA-ZÀ-ÿ -]*$/i)
+  if (firstNameReg.test(nameParam)){
+    return firstNameReg.test(nameParam);
   } else {
-    alert(alertParam);
-    return firstNameReg.test(NameParam);
+    alert(alertMessageParam);
+    return firstNameReg.test(nameParam);
+  }
+}
+
+/**
+ * Validation de l'adresse et de la Ville
+ * @param {string} locationParam
+ * @param {string} alertMessageParam
+ * @returns {boolean} 
+ */
+function validateLocation(locationParam, alertMessageParam){
+  const firstNameReg = new RegExp(/^[a-zA-Z0-9À-ÿ -]*$/i)
+  if (firstNameReg.test(locationParam)){
+    return firstNameReg.test(locationParam);
+  } else {
+    alert(alertMessageParam);
+    return firstNameReg.test(locationParam);
   }
 }
 
