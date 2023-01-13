@@ -135,7 +135,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
+  if (isCartHasProduct('Veuiller remplir votre panier') && validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -161,6 +161,20 @@ function createArrayProducts(idParam) {
   let allCart = getCart();
   for (let product of allCart) {
     idParam.push(product._id);
+  }
+}
+
+/**
+ * Panier disposant d'un produit : vrai ou faux ?
+ * @param {*} alertMessageParam 
+ * @returns {boolean}
+ */
+function isCartHasProduct(alertMessageParam){
+  if (getCart().length != 0){
+    return true
+  } else {
+    alert(alertMessageParam)
+    return false
   }
 }
 
