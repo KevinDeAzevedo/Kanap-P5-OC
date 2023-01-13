@@ -13,6 +13,7 @@ async function mergeProduct() {
       product.altTxt = data.altTxt;
       // Forcer dans le LocalStorage une quantité de 100 si quantité sup.
       if (product.quantity > 100){
+        alert('Quantité trop grandes! Max 100 par produit.')
         product.quantity = 100
         saveCart(allCart)
       }
@@ -139,7 +140,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (isCartHasProduct('Veuiller remplir votre panier') && isMaxQuantity('Quantité choisie trop grande, max 100 !') && validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
+  if (isCartHasProduct('Veuiller remplir votre panier') && isMaxQuantity() && validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -171,16 +172,12 @@ function createArrayProducts(idParam) {
 /**
  * Fonction pour le Submit : Re-vérifier si tous les produits ont une quantité max de 100
  * Forcer dans le LocalStorage une quantité de 100 si quantité sup.
- * @param {string} alertMessageParam
  * @returns {boolean} 
  */
-function isMaxQuantity(alertMessageParam){
+function isMaxQuantity(){
   let allCart = getCart();
   for (let product of allCart){
     if (product.quantity > 100){
-      alert(alertMessageParam)
-      product.quantity = 100
-      saveCart(allCart)
       mergeProduct()
       return false
     } else {
