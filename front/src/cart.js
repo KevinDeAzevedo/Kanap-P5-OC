@@ -45,3 +45,13 @@ function changeQuantity(idParam, colorParam, quantityParam){
   saveCart(cart)
 }
 
+/**
+ * Format du prix : 9999 en 9 999
+ * @param {number} param 
+ * @return {number}
+ */
+function priceFormat(param){
+  const priceFormated = new Intl.NumberFormat().format(param);
+  return priceFormated
+}
+

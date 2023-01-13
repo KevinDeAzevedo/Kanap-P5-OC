@@ -40,7 +40,7 @@ function makeHtmlCartList(cartParam) {
       '</h2><p>' +
       product.color +
       '</p><p>' +
-      product.price +
+      priceFormat(product.price)+
       ' €</p></div><div class="cart__item__content__settings"><div class="cart__item__content__settings__quantity"><p>Qté : </p><input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="' +
       product.quantity +
       '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" ">Supprimer</p></div></div></div></article>';
@@ -103,7 +103,7 @@ function calculTotal(allCartParam) {
   }
   // Construction de l'interface HTML
   document.querySelector('#totalQuantity').textContent = totalProducts;
-  document.querySelector('#totalPrice').textContent = totalPrice;
+  document.querySelector('#totalPrice').textContent = priceFormat(totalPrice);
 }
 
 // Récupération des valeurs input du formulaire

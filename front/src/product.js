@@ -30,7 +30,7 @@ function makeHtmlProductInfo(dataParam) {
   document.querySelector('.item__img').innerHTML =
     '<img src="' + dataParam.imageUrl + '" alt="' + dataParam.altTxt + '">';
   document.getElementById('title').textContent = dataParam.name;
-  document.getElementById('price').textContent = dataParam.price;
+  document.getElementById('price').textContent = priceFormat(dataParam.price);
   document.getElementById('description').textContent = dataParam.description;
   for (const color of dataParam.colors) {
     colorList += '<option value="' + color + '">' + color + '</option>';
