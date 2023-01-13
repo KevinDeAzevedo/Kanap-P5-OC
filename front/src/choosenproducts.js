@@ -11,6 +11,11 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
+      // Bloquer la quantité à max 100
+      if (product.quantity > 100){
+        product.quantity = 100
+        saveCart(allCart)
+      }
     }
   } catch (error) {
     console.error(error);
