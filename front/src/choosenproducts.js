@@ -80,18 +80,20 @@ function makeQteInputs() {
       .querySelector('.itemQuantity')
       .addEventListener('change', function (event) {
         let newQuantity = event.target.value * 1;
-        if (newQuantity > 100 || newQuantity < 0) {
-          article.querySelector('.itemQuantity').style.color = 'red';
-          alert('Quantité invalide');
-        } else {
-          // Mise à jour de la quantité
-          changeQuantity(id, color, newQuantity);
-          // Fusion du LocalStorage et API
-          mergeProduct();
+        newQuantity = Math.round(newQuantity) * (Math.sign(newQuantity)) // Formate à un Integer Positif
+        if (newQuantity > 100){
+          alert('quantité trop grande, pas plus de 100 !')
+          newQuantity = 100
+        } else if (newQuantity == 0){
+          removeProduct(id, color);
         }
+        changeQuantity(id, color, newQuantity);
+        // Fusion du LocalStorage et API
+        mergeProduct();
       });
   }
 }
+
 
 // Calcul du prix et quantité total
 function calculTotal(allCartParam) {
