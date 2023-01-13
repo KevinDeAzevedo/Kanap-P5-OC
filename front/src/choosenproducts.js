@@ -82,18 +82,18 @@ function makeQteInputs() {
         let newQuantity = event.target.value * 1;
         newQuantity = Math.round(newQuantity) * (Math.sign(newQuantity)) // Formate à un Integer Positif
         if (newQuantity > 100){
-          alert('quantité trop grande, pas plus de 100 !')
+          alert('Quantité trop grande, pas plus de 100 !')
           newQuantity = 100
         } else if (newQuantity == 0){
           removeProduct(id, color);
         }
+        // Modifie la quantité au niveau du caddy de la page
         changeQuantity(id, color, newQuantity);
         // Fusion du LocalStorage et API
         mergeProduct();
       });
   }
 }
-
 
 // Calcul du prix et quantité total
 function calculTotal(allCartParam) {
