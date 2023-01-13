@@ -25,6 +25,8 @@ async function mergeProduct() {
 
 /**
  * Forcer quantité à 100 si quantité +100
+ * sinon si
+ * Supprimer produit si quantité <= 0
  * @param {Object} productParam 
  * @param {Array<Object>} allCartParam 
  */
@@ -33,6 +35,10 @@ function formatMaxQuantity(productParam, allCartParam){
     alert(`Une quantité de ${productParam.quantity} est trop grandes! Max 100 par produit.`)
     productParam.quantity = 100
     saveCart(allCartParam)
+  } else if (productParam.quantity <= 0){
+    alert(`Une quantité à ${productParam.quantity}, entraine la suppression du produit`)
+    removeProduct(productParam._id, productParam.color);
+    location.reload()
   }
 }
 
@@ -97,6 +103,7 @@ function makeQteInputs() {
         let newQuantity = event.target.value * 1;
         newQuantity = Math.round(newQuantity) * (Math.sign(newQuantity)) // Formate à un Integer Positif
         if (newQuantity == 0){
+          alert(`Une quantité à ${newQuantity}, entraine la suppression du produit`)
           removeProduct(id, color);
         }
         // Modifie la quantité au niveau du caddy de la page
@@ -186,7 +193,7 @@ function createArrayProducts(idParam) {
 function isMaxQuantity(){
   let allCart = getCart();
   for (let product of allCart){
-    if (product.quantity > 100){
+    if (product.quantity > 100 || product.quantity <= 0){
       mergeProduct()
       return false
     } else {
