@@ -88,7 +88,6 @@ function makeQteInputs() {
         newQuantity = Math.round(newQuantity) * (Math.sign(newQuantity)) // Formate à un Integer Positif
         if (newQuantity > 100){
           alert('Quantité trop grande, pas plus de 100 !')
-          newQuantity = 100
         } else if (newQuantity == 0){
           removeProduct(id, color);
         }
