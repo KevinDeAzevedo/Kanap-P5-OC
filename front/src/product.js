@@ -50,7 +50,7 @@ document.getElementById('addToCart').addEventListener('click', function () {
   } else if (selectedQuantity > 0 && selectedColor != ''){
     addProduct()
     if (window.confirm("Aller voir le panier ?")) {
-      window.open("cart.html");
+      window.location.href = "cart.html"
     }
   }
 });
