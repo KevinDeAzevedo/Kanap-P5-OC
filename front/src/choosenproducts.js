@@ -11,12 +11,8 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
-      // Forcer dans le LocalStorage une quantité de 100 si quantité sup.
-      if (product.quantity > 100){
-        alert('Quantité trop grandes! Max 100 par produit.')
-        product.quantity = 100
-        saveCart(allCart)
-      }
+      // Forcer quantité à 100 si quantité +100
+      formatMaxQuantity(product, allCart)
     }
   } catch (error) {
     console.error(error);
@@ -25,6 +21,19 @@ async function mergeProduct() {
   makeHtmlCartList(allCart);
   // Calcul du prix et quantité total
   calculTotal(allCart);
+}
+
+/**
+ * Forcer quantité à 100 si quantité +100
+ * @param {Object} productParam 
+ * @param {Array<Object>} allCartParam 
+ */
+function formatMaxQuantity(productParam, allCartParam){
+  if (productParam.quantity > 100){
+    alert(`Une quantité de ${productParam.quantity} est trop grandes! Max 100 par produit.`)
+    productParam.quantity = 100
+    saveCart(allCartParam)
+  }
 }
 
 /**
@@ -171,7 +180,7 @@ function createArrayProducts(idParam) {
 
 /**
  * Fonction pour le Submit : Re-vérifier si tous les produits ont une quantité max de 100
- * Forcer dans le LocalStorage une quantité de 100 si quantité sup.
+ * Si +100, appeler la fonction Merge qui forcera la quantité à 100
  * @returns {boolean} 
  */
 function isMaxQuantity(){
