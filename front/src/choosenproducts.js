@@ -11,8 +11,8 @@ async function mergeProduct() {
       product.name = data.name;
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
-      // Bloquer la quantité à max 100
-      if (product.quantity > 100){
+      // Forcer dans le LocalStorage une quantité de 100 si quantité sup.
+      if (isMaxQuantity()){
         product.quantity = 100
         saveCart(allCart)
       }
@@ -141,7 +141,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (isCartHasProduct('Veuiller remplir votre panier') && validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
+  if (isCartHasProduct('Veuiller remplir votre panier') && isMaxQuantity('Quantité choisie trop grande, max 100 !') && validateEmail(email) && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide')) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -167,6 +167,26 @@ function createArrayProducts(idParam) {
   let allCart = getCart();
   for (let product of allCart) {
     idParam.push(product._id);
+  }
+}
+
+/**
+ * Vérifier si tous les produits ont une quantité max de 100
+ * Forcer dans le LocalStorage une quantité de 100 si quantité sup.
+ * @param {string} alertMessageParam
+ * @returns {boolean} 
+ */
+function isMaxQuantity(alertMessageParam){
+  let allCart = getCart();
+  for (let product of allCart){
+    if (product.quantity > 100){
+      alert(alertMessageParam)
+      product.quantity = 100
+      saveCart(allCart)
+      return false
+    } else {
+      return true
+    }
   }
 }
 
