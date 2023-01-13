@@ -12,7 +12,7 @@ async function mergeProduct() {
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
       // Forcer dans le LocalStorage une quantité de 100 si quantité sup.
-      if (isMaxQuantity()){
+      if (product.quantity > 100){
         product.quantity = 100
         saveCart(allCart)
       }
@@ -86,9 +86,7 @@ function makeQteInputs() {
       .addEventListener('change', function (event) {
         let newQuantity = event.target.value * 1;
         newQuantity = Math.round(newQuantity) * (Math.sign(newQuantity)) // Formate à un Integer Positif
-        if (newQuantity > 100){
-          alert('Quantité trop grande, pas plus de 100 !')
-        } else if (newQuantity == 0){
+        if (newQuantity == 0){
           removeProduct(id, color);
         }
         // Modifie la quantité au niveau du caddy de la page
@@ -171,7 +169,7 @@ function createArrayProducts(idParam) {
 }
 
 /**
- * Vérifier si tous les produits ont une quantité max de 100
+ * Fonction pour le Submit : Re-vérifier si tous les produits ont une quantité max de 100
  * Forcer dans le LocalStorage une quantité de 100 si quantité sup.
  * @param {string} alertMessageParam
  * @returns {boolean} 
@@ -183,6 +181,7 @@ function isMaxQuantity(alertMessageParam){
       alert(alertMessageParam)
       product.quantity = 100
       saveCart(allCart)
+      mergeProduct()
       return false
     } else {
       return true
