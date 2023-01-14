@@ -238,12 +238,12 @@ function validateEmail(emailParam){
  * @returns {boolean} 
  */
 function validateName(nameParam, alertMessageParam){
-  const firstNameReg = new RegExp(/^[a-zA-ZÀ-ÿ -]*$/i)
-  if (firstNameReg.test(nameParam)){
-    return firstNameReg.test(nameParam);
+  const nameReg = new RegExp(/^[a-zA-ZÀ-ÿ -]*$/i)
+  if (nameReg.test(nameParam)){
+    return nameReg.test(nameParam);
   } else {
     alert(alertMessageParam);
-    return firstNameReg.test(nameParam);
+    return nameReg.test(nameParam);
   }
 }
 
@@ -254,12 +254,12 @@ function validateName(nameParam, alertMessageParam){
  * @returns {boolean} 
  */
 function validateLocation(locationParam, alertMessageParam){
-  const firstNameReg = new RegExp(/^[a-zA-Z0-9À-ÿ -]*$/i)
-  if (firstNameReg.test(locationParam)){
-    return firstNameReg.test(locationParam);
+  const locationReg = new RegExp(/^[a-zA-Z0-9À-ÿ -]*$/i)
+  if (locationReg.test(locationParam)){
+    return locationReg.test(locationParam);
   } else {
     alert(alertMessageParam);
-    return firstNameReg.test(locationParam);
+    return locationReg.test(locationParam);
   }
 }
 
