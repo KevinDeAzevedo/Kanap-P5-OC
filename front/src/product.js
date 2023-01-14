@@ -24,7 +24,7 @@ async function gettingProduct() {
 
 /**
  * 
- * @param {Object} dataParam Le produit avec son image, alt, nom, prix, description, couleur
+ * @param {Array<Object>} dataParam Le produit avec son image, alt, nom, prix, description, couleur
  */
 function makeHtmlProductInfo(dataParam) {
   document.querySelector('.item__img').innerHTML =

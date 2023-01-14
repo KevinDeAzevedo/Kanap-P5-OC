@@ -13,7 +13,7 @@ async function fetchData() {
 
 /**
  * Construction de la liste des produits en HTML :
- * @param {Object} dataParam Les produits avec leur id, image, alt, nom, description
+ * @param {Array<Object>} dataParam Les produits avec leur id, image, alt, nom, description
  */
 function makeHtmlList(dataParam) {
   let productList = '';
