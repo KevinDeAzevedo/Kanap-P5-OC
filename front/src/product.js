@@ -62,10 +62,13 @@ document.getElementById('colors').addEventListener('input', function (event) {
 document.getElementById('quantity').addEventListener('change', function (event) {
   selectedQuantity = event.target.value * 1;
   selectedQuantity = Math.round(selectedQuantity) * (Math.sign(selectedQuantity)) // Formate à un Integer Positif
-  this.value = selectedQuantity
+  // Limiter à une quantité max de 100
   if (selectedQuantity > 100){
     this.value = 100
+    selectedQuantity = 100
     alert('Quantité trop grande, maximum 100 !')
+  } else {
+    this.value = selectedQuantity
   }
 });
 
