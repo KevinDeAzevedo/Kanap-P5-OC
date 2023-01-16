@@ -48,7 +48,8 @@ function formatMaxQuantity(productParam){
 function makeHtmlCartList(cartParam) {
   let cartList = '';
   for (const product of cartParam) {
-    cartList +=
+    if (product.name != undefined){
+      cartList +=
       '<article class="cart__item" data-id="' +
       product._id +
       '" data-color="' +
@@ -64,6 +65,7 @@ function makeHtmlCartList(cartParam) {
       ' €</p></div><div class="cart__item__content__settings"><div class="cart__item__content__settings__quantity"><p>Qté : </p><input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="' +
       product.quantity +
       '"></div><div class="cart__item__content__settings__delete"><p class="deleteItem" ">Supprimer</p></div></div></div></article>';
+    } 
   }
   document.getElementById('cart__items').innerHTML = cartList;
   // Construction des boutons de suppression
@@ -281,6 +283,6 @@ async function sendRequestOrder(objectParam){
     // Redirection vers la page confirmation en passant orderId reçu en reponse de l'API
     window.location.href = `./confirmation.html?order-id=${result.orderId}`
   } else {
-    alert("Une erreur s'est produite")
+    alert("Un ou plusieurs produits introuvables")
   }
 }
