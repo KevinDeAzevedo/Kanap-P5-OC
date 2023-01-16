@@ -12,7 +12,7 @@ async function mergeProduct() {
       product.imageUrl = data.imageUrl;
       product.altTxt = data.altTxt;
       // Forcer quantité à 100 si quantité +100
-      formatMaxQuantity(product, allCart)
+      formatMaxQuantity(product)
     }
   } catch (error) {
     console.error(error);
@@ -28,13 +28,12 @@ async function mergeProduct() {
  * sinon si
  * Supprimer produit si quantité <= 0
  * @param {Object} productParam 
- * @param {Array<Object>} allCartParam 
  */
-function formatMaxQuantity(productParam, allCartParam){
+function formatMaxQuantity(productParam){
   if (productParam.quantity > 100){
     alert(`Une quantité de ${productParam.quantity} est trop grandes! Max 100 par produit.`)
     productParam.quantity = 100
-    saveCart(allCartParam)
+    changeQuantity(productParam._id, productParam.color, productParam.quantity)
   } else if (productParam.quantity <= 0){
     alert(`Une quantité à ${productParam.quantity}, entraine la suppression du produit`)
     removeProduct(productParam._id, productParam.color);
@@ -152,6 +151,8 @@ class order {
     this.products = productsIds;
   }
 }
+
+
 
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
@@ -276,6 +277,10 @@ async function sendRequestOrder(objectParam){
     body: JSON.stringify(objectParam)
   });
   let result = await response.json();
-  // Redirection vers la page confirmation en passant orderId reçu en reponse de l'API
-  window.location.href = `./confirmation.html?order-id=${result.orderId}`
+  if (result.orderId != undefined){
+    // Redirection vers la page confirmation en passant orderId reçu en reponse de l'API
+    window.location.href = `./confirmation.html?order-id=${result.orderId}`
+  } else {
+    alert("Une erreur s'est produite")
+  }
 }
