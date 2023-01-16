@@ -156,7 +156,7 @@ class order {
 // Fonction du bouton 'Commander'
 document.querySelector('#order').addEventListener('click', function (event) {
   event.preventDefault()
-  if (isCartHasProduct('Veuiller remplir votre panier') && isMaxQuantity() && validateName(firstName, 'Prénom invalide') && validateName(lastName, 'Nom invalide') && validateLocation(address, 'Adresse Invalide') && validateLocation(city, 'Ville Invalide') && validateEmail(email)) {
+  if (isCartHasProduct('Veuiller remplir votre panier') && isMaxQuantity() && validateName(firstName, 'firstNameErrorMsg', 'Prénom invalide') && validateName(lastName, 'lastNameErrorMsg', 'Nom invalide') && validateLocation(address, 'addressErrorMsg', 'Adresse Invalide') && validateLocation(city, 'cityErrorMsg', 'Ville Invalide') && validateEmail(email)) {
     // Stocker les valeurs du formulaire dans un objet
     const contactObject = {firstName:`${firstName}`,lastName:`${lastName}`,address:`${address}`,city:`${city}`,email:`${email}`}
     let productsIds = [];
@@ -226,7 +226,7 @@ function validateEmail(emailParam){
   if (emailReg.test(emailParam)){
     return emailReg.test(emailParam);
   } else {
-    alert('Email invalide');
+    document.querySelector('#emailErrorMsg').textContent = 'Email invalide'
     return emailReg.test(emailParam);
   }
 }
@@ -237,12 +237,12 @@ function validateEmail(emailParam){
  * @param {string} alertMessageParam
  * @returns {boolean} 
  */
-function validateName(nameParam, alertMessageParam){
-  const nameReg = new RegExp(/^[a-zA-ZÀ-ÿ -]*$/i)
+function validateName(nameParam, errorIdParam, alertMessageParam){
+  const nameReg = new RegExp(/^[a-zA-ZÀ-ÿ -]+$/i)
   if (nameReg.test(nameParam)){
     return nameReg.test(nameParam);
   } else {
-    alert(alertMessageParam);
+    document.querySelector(`#${errorIdParam}`).textContent = alertMessageParam
     return nameReg.test(nameParam);
   }
 }
@@ -253,12 +253,12 @@ function validateName(nameParam, alertMessageParam){
  * @param {string} alertMessageParam
  * @returns {boolean} 
  */
-function validateLocation(locationParam, alertMessageParam){
-  const locationReg = new RegExp(/^[a-zA-Z0-9À-ÿ -]*$/i)
+function validateLocation(locationParam, errorIdParam, alertMessageParam){
+  const locationReg = new RegExp(/^[a-zA-Z0-9À-ÿ -]+$/i)
   if (locationReg.test(locationParam)){
     return locationReg.test(locationParam);
   } else {
-    alert(alertMessageParam);
+    document.querySelector(`#${errorIdParam}`).textContent = alertMessageParam
     return locationReg.test(locationParam);
   }
 }
